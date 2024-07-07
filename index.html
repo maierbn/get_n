@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Page</title>
+</head>
+<body>
+    <h1>Event Information</h1>
+    <p>Bereits angemeldet:  <span id="attendees">...</span> LäuferInnen und <span id="sponsors">...</span> Sponsoren</p>
+
+    <script>
+        async function loadEventData() {
+            const url = 'event_data.json'; // URL of the JSON file served by the HTTP server
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json();
+                document.getElementById('sponsors').textContent = data.sponsors;
+                document.getElementById('attendees').textContent = data.attendees;
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('sponsors').textContent = 'Error loading data';
+                document.getElementById('attendees').textContent = 'Error loading data';
+            }
+        }
+
+        // Call the function to load data when the page loads
+        window.onload = loadEventData;
+    </script>
+</body>
+</html>
